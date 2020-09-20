@@ -36,7 +36,7 @@ io.on("connection", (socket) => {
 
 startGameInterval = (socket, state) => {
   const intervalId = setInterval(() => {
-    const winner = gameLoop(state);
+    const winner = gameLoop(state, socket);
 
     if (!winner) {
       socket.emit("gameState", JSON.stringify(state));

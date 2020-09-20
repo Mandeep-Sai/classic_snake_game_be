@@ -24,7 +24,7 @@ createGameState = () => {
     gridSize: gridSize,
   };
 };
-gameLoop = (state) => {
+gameLoop = (state, socket) => {
   if (!state) {
     return;
   }
@@ -46,6 +46,7 @@ gameLoop = (state) => {
     playerOne.pos.x += playerOne.vel.x;
     playerOne.pos.y += playerOne.vel.y;
     randomFood(state);
+    socket.emit("increaseScore");
   }
   if (playerOne.vel.x || playerOne.vel.y) {
     for (let cell of playerOne.snake) {
