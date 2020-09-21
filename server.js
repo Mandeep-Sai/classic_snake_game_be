@@ -1,8 +1,9 @@
 const express = require("express");
 const socketio = require("socket.io");
 const cors = require("cors");
-
+const scoreRoutes = require("./scores");
 const http = require("http");
+const mongoose = require("mongoose");
 
 const app = express();
 const { createGameState, gameLoop, getUpdatedVelocity } = require("./game");
@@ -10,6 +11,8 @@ const { frameRate } = require("./constant");
 
 const server = http.createServer(app);
 app.use(cors());
+app.use(express.json());
+app.use("/scores", scoreRoutes);
 
 const io = socketio(server);
 
@@ -46,6 +49,19 @@ startGameInterval = (socket, state) => {
     }
   }, 1000 / frameRate);
 };
-server.listen(3001, () => {
-  console.log("running on 3001");
+
+const url =
+  "mongodb+srv://user7:user@community.hw7hj.mongodb.net/community?retryWrites=true&w=majority";
+mongoose
+  .connect(url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(
+    server.listen(process.env.PORT || 3001, () => {
+      console.log(`working on port 3001`);
+    })
+  );
+mongoose.connection.on("connected", () => {
+  console.log("connected to atlas");
 });
