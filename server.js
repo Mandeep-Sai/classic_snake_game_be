@@ -4,6 +4,7 @@ const cors = require("cors");
 const scoreRoutes = require("./scores");
 const http = require("http");
 const mongoose = require("mongoose");
+const dotenv = require("dotenv").config();
 
 const app = express();
 const { createGameState, gameLoop, getUpdatedVelocity } = require("./game");
@@ -50,10 +51,8 @@ startGameInterval = (socket, state) => {
   }, 1000 / frameRate);
 };
 
-const url =
-  "mongodb+srv://user7:user@community.hw7hj.mongodb.net/community?retryWrites=true&w=majority";
 mongoose
-  .connect(url, {
+  .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
